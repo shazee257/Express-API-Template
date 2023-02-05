@@ -1,27 +1,21 @@
 // for async error handling (no need to use try catch)
 require('express-async-errors');
+
 const express = require('express');
-const dbConnect = require('./config/dbConnect');
-const authApi = require('./api/auth');
+const logger = require('./config/logging');
 const api = require('./api');
+const dbConnect = require('./config/dbConnect');
 require('dotenv').config();
-const { isAuth } = require('./middlewares');
-const { notFound, errorHandler } = require('./middlewares/errorHandling');
 
 const app = express();
+logger();
 dbConnect();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 5000;
 
-app.use("/api/auth", authApi);
-
-app.use(isAuth);
-
-app.use("/api", api);
-
-app.use(notFound);
-app.use(errorHandler);
+app.use('/api', api);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
