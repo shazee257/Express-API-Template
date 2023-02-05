@@ -16,5 +16,6 @@ module.exports = function () {
     winston.add(new winston.transports.MongoDB({
         db: process.env.MONGODB_URL,
         level: 'info',
+        collection: 'logs'
     }));
 };

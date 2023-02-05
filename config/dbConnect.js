@@ -6,7 +6,7 @@ const dbConnect = () => {
     mongoose.connect(process.env.MONGODB_URL)
         .then(() => {
             console.log('Connected to DB');
-            winston.info('Connected to DB');
+            // winston.info('Connected to DB');
         })
         .catch((error) => {
             console.log("db error: ", error);
