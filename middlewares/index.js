@@ -13,7 +13,6 @@ exports.isAuth = async (req, res, next) => {
             next(new Error("Invalid Token"))
         }
         else {
-            console.log("decoded: ", decoded);
             req.user = { ...decoded };
             next();
         }

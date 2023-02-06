@@ -8,7 +8,7 @@ module.exports = function () {
     });
 
     process.on('unhandledRejection', (err) => {
-        console.log('UNHANDLED REJECTION! 💥');
+        console.log('UNHANDLED REJECTION! 💥', err);
         winston.error(err.message, err);
     });
 
