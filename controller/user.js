@@ -46,6 +46,11 @@ exports.login = async (req, res, next) => {
         const isMatch = await user.matchPassword(password);
         if (isMatch) {
             const token = user.generateToken();
+
+            // login successful with cookie-session
+            req.session.userId = user._id;
+            req.session.token = token;
+            req.session.email = email;
             generateResponse(token, 'Login successful', res);
         } else {
             next(new Error('Invalid password'));
@@ -54,6 +59,12 @@ exports.login = async (req, res, next) => {
         next(new Error('Invalid email or password'));
     }
 };
+
+// logout 
+exports.logout = async (req, res, next) => {
+    req.session = null;
+    generateResponse(null, 'Logout successful', res);
+}
 
 exports.getUser = async (req, res, next) => {
     const { _id } = req.user;
