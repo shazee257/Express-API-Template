@@ -20,54 +20,6 @@ export const parseBody = (body) => {
     return obj;
 }
 
-// pagination with mongoose paginate library
-export const getMongoosePaginatedData = async ({
-    model, page = 1, limit = 10, query = {}, populate = '', select = '-password', sort = { createdAt: -1 },
-}) => {
-    const options = {
-        select,
-        sort,
-        populate,
-        lean: true,
-        page,
-        limit,
-        customLabels: {
-            totalDocs: 'totalItems',
-            docs: 'data',
-            limit: 'perPage',
-            page: 'currentPage',
-            meta: 'pagination',
-        },
-    };
-
-    const { data, pagination } = await model.paginate(query, options);
-    delete pagination?.pagingCounter;
-
-    return { data, pagination };
-}
-
-// aggregate pagination with mongoose paginate library
-export const getMongooseAggregatePaginatedData = async ({ model, page = 1, limit = 10, query = [] }) => {
-    const options = {
-        page,
-        limit,
-        customLabels: {
-            totalDocs: 'totalItems',
-            docs: 'data',
-            limit: 'perPage',
-            page: 'currentPage',
-            meta: 'pagination',
-        },
-    };
-
-    const myAggregate = model.aggregate(query);
-    const { data, pagination } = await model.aggregatePaginate(myAggregate, options);
-
-    delete pagination?.pagingCounter;
-
-    return { data, pagination };
-}
-
 // async handler for express routes
 export const asyncHandler = (requestHandler) => {
     return (req, res, next) => Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));

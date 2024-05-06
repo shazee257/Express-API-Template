@@ -1,10 +1,8 @@
 import { Schema, model } from "mongoose";
-import mongoosePaginate from 'mongoose-paginate-v2';
-import aggregatePaginate from "mongoose-aggregate-paginate-v2";
-import { getMongoosePaginatedData } from "../utils/helpers.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ROLES } from "../utils/constants.js";
+import { mongoosePlugin, mongooseAggregatePlugin, getAggregatedPaginatedData, getPaginatedData } from "mongoose-pagination-v2";
 
 // user schema
 const userSchema = new Schema({
@@ -38,8 +36,8 @@ userSchema.methods.generateAccessToken = function () {
     );
 };
 
-userSchema.plugin(mongoosePaginate);
-userSchema.plugin(aggregatePaginate);
+userSchema.plugin(mongoosePlugin);
+userSchema.plugin(mongooseAggregatePlugin);
 
 const UserModel = model('User', userSchema);
 
@@ -51,7 +49,7 @@ export const getUser = (query) => UserModel.findOne(query);
 
 // get all users
 export const getAllUsers = async ({ query, page, limit }) => {
-    const { data, pagination } = await getMongoosePaginatedData({
+    const { data, pagination } = await getPaginatedData({
         model: UserModel,
         query,
         page,

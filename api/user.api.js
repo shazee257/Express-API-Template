@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ROLES } from '../utils/constants.js';
 import { authMiddleware } from '../middlewares/index.js';
-import { fetchAllUsers, fetchUser, updateUser } from '../controllers/index.js';
+import { fetchAllUsers, fetchUser } from '../controllers/index.js';
 import { getUserValidation } from '../validators/index.js';
 
 export default class UserAPI {
@@ -18,7 +18,7 @@ export default class UserAPI {
         // router.get('/sub-ordinates', authMiddleware(Object.values(ROLES)), getListOfSubordinates);
         router.get('/:userId', authMiddleware(Object.values(ROLES)), getUserValidation, fetchUser);
 
-        router.put('/update/:userId', authMiddleware(Object.values(ROLES)), updateUser);
+        // router.put('/update/:userId', authMiddleware(Object.values(ROLES)), updateUser);
 
         // router.put('/assign-lead', authMiddleware(Object.values(ROLES)), assignLead);
     }
