@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { validateRequest } from "./validate.js";
+import { validateBody } from "./validate.js";
 
 const addOrUpdateUserValidator = Joi.object({
     name: Joi.string().trim().required(),
@@ -7,4 +7,4 @@ const addOrUpdateUserValidator = Joi.object({
     password: Joi.string().min(8).required(),
 });
 
-export const userUpdateValidation = validateRequest(addOrUpdateUserValidator);
+export const userUpdateValidation = validateBody(addOrUpdateUserValidator);

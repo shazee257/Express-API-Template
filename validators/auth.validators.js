@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { objectId, validateRequest } from "./validate.js";
+import { validateBody } from "./validate.js";
 import { ROLES, STATUS_CODES } from "../utils/constants.js";
 import { asyncHandler } from "../utils/helpers.js";
 import { getUser } from "../models/index.js";
@@ -27,5 +27,5 @@ const userLoginValidator = Joi.object({
     password: Joi.string().required()
 });
 
-export const registerValidation = [validateRequest(userRegisterValidator), emailExistsValidator];
-export const loginValidation = validateRequest(userLoginValidator);
+export const registerValidation = [validateBody(userRegisterValidator), emailExistsValidator];
+export const loginValidation = validateBody(userLoginValidator);
