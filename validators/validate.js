@@ -5,25 +5,21 @@ import { Types } from "mongoose";
 export const validateRequest = (schema) => {
     return (req, res, next) => {
         const { error } = schema.validate(req.body);
-        if (error) {
-            return next({
-                statusCode: STATUS_CODES.UNPROCESSABLE_ENTITY,
-                message: error.details[0].message.replace(/"/g, ''),
-            });
-        }
+        if (error) return next({
+            statusCode: STATUS_CODES.UNPROCESSABLE_ENTITY,
+            message: error.details[0].message.replace(/"/g, ''),
+        });
         next();
     };
 }
 
 export const validateParams = (schema) => {
     return (req, res, next) => {
-        const { error } = schema.validate(req.params, { abortEarly: false });
-        if (error) {
-            return next({
-                statusCode: STATUS_CODES.UNPROCESSABLE_ENTITY,
-                message: error.details[0].message.replace(/"/g, ''),
-            });
-        }
+        const { error } = schema.validate(req.params);
+        if (error) return next({
+            statusCode: STATUS_CODES.UNPROCESSABLE_ENTITY,
+            message: error.details[0].message.replace(/"/g, ''),
+        });
         next();
     };
 }
