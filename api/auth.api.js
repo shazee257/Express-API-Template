@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { login, register } from '../controllers/index.js';
-import { loginValidation, registerValidation } from '../validators/index.js';
+import { login, register } from '../controllers/auth.controller.js';
 
 export default class AuthAPI {
     constructor() {
@@ -9,8 +8,8 @@ export default class AuthAPI {
     }
 
     setupRoutes() {
-        this.router.post('/register', registerValidation, register);
-        this.router.post('/login', loginValidation, login);
+        this.router.post('/register', register);
+        this.router.post('/login', login);
     }
 
     getRouter() {

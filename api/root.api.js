@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { defaultHandler } from '../controllers/index.js';
+import { defaultHandler } from '../controllers/root.controller.js';
 
 export default class RootAPI {
     constructor() {

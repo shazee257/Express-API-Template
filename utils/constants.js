@@ -12,7 +12,7 @@ export const STATUS_CODES = Object.freeze({
   INTERNAL_SERVER_ERROR: 500,
 });
 
-export const ROLES = Object.freeze({
+export const ROLES = {
   ADMIN: 'admin',
   USER: 'user'
-});
+};

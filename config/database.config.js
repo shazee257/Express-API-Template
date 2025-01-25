@@ -3,14 +3,10 @@ import colors from "colors";
 
 const connectDB = async () => {
     try {
-        const DB_URI = `${process.env.MONGODB_URL}/${process.env.DB_NAME}`;
-        const conn = await mongoose.connect(DB_URI);
+        const conn = await mongoose.connect(process.env.MONGODB_URL);
         console.log(`MongoDB Connected -> : ${conn.connection.name}`.cyan.bold);
-
-        // create default admin
-        // await createDefaultAdmin();
     } catch (error) {
-        console.error(`Error: ${error.message}`.red.bold);
+        console.error(`DB Error: ${error.message}`.red.bold);
         process.exit(1);
     }
 };

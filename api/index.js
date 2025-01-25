@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import RootAPI from './root.api.js';
 import AuthAPI from './auth.api.js';
-import UserAPI from './user.api.js';
 
 export default class API {
     constructor(app) {
@@ -13,7 +12,6 @@ export default class API {
     loadRouteGroups() {
         this.routeGroups.push(new RootAPI());
         this.routeGroups.push(new AuthAPI());
-        this.routeGroups.push(new UserAPI());
     }
 
     setContentType(req, res, next) {

@@ -1,39 +1,53 @@
-import { generateResponse, asyncHandler } from '../utils/helpers.js';
-import { createUser, getUser } from '../models/index.js';
-import { STATUS_CODES } from '../utils/constants.js';
+import { UserModel } from '../models/user.model.js';
+import { generateResponse } from '../utils/helpers.js';
+import { compare, hash } from 'bcrypt';
 
-// register user
-export const register = asyncHandler(async (req, res, next) => {
-    // create user in db
-    let user = await createUser(req.body);
+export const register = async (req, res, next) => {
+    const { email, password } = req.body;
 
-    // remove password
-    user = user.toObject();
-    delete user.password;
+    if (!email || !password) {
+        return next({
+            statusCode: 401,
+            message: 'Email and password are required',
+        });
+    }
 
-    generateResponse(user, "Register successful", res);
-});
+    const emailExists = await UserModel.findOne({ email });
+    if (emailExists) {
+        return next({
+            statusCode: 409,
+            message: 'Email already exists',
+        });
+    }
 
-// login user
-export const login = asyncHandler(async (req, res, next) => {
-    let user = await getUser({ email: req.body.email }).select('+password');
+    const hashedPassword = await hash(password, 10);
+
+    const user = await UserModel.create({
+        email,
+        password: hashedPassword
+    });
+    generateResponse(user, 'Registered successful', res);
+};
+
+export const login = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) return next({
+        statusCode: 401,
+        message: 'Email and password are required',
+    });
+
+    const user = await UserModel.findOne({ email }).select('+password');
     if (!user) return next({
-        statusCode: STATUS_CODES.BAD_REQUEST,
-        message: 'Invalid email or password'
+        statusCode: 404,
+        message: 'user not found',
     });
 
-    const isPasswordMatch = await user.isPasswordCorrect(req.body.password);
-    if (!isPasswordMatch) return next({
-        statusCode: STATUS_CODES.UNAUTHORIZED,
-        message: 'Invalid password'
+    const passwordMatch = await compare(password, user.password);
+    if (!passwordMatch) return next({
+        statusCode: 401,
+        message: 'Invalid credentials',
     });
 
-    const accessToken = await user.generateAccessToken();
-    req.session = { accessToken };
-
-    // remove password
-    user = user.toObject();
-    delete user.password;
-
-    generateResponse({ user, accessToken }, 'Login successful', res);
-});
+    generateResponse(user, 'Login successful', res);
+}

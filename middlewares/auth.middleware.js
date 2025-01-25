@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { STATUS_CODES } from '../utils/constants.js';
-import { getUser } from '../models/index.js';
+// import { getUser } from '../models/index.js';
 
 export const authMiddleware = (roles) => {
     return (req, res, next) => {
@@ -19,11 +19,11 @@ export const authMiddleware = (roles) => {
 
             req.user = { ...decoded };
 
-            const user = await getUser({ _id: req.user.id });
-            if (!user) return next({
-                statusCode: STATUS_CODES.UNAUTHORIZED,
-                message: 'Unauthorized access!'
-            });
+            // const user = await getUser({ _id: req.user.id });
+            // if (!user) return next({
+            //     statusCode: STATUS_CODES.UNAUTHORIZED,
+            //     message: 'Unauthorized access!'
+            // });
 
             if (!roles.includes(req.user.role)) return next({
                 statusCode: STATUS_CODES.UNAUTHORIZED,
