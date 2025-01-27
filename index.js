@@ -20,7 +20,7 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cors({ origin: "*", credentials: true }));
 
-app.get('/', (req, res) => generateResponse(null, `${process.env.APP_NAME} API - Health check passed`, res));
+app.get('/', (req, res) => generateResponse(null, `${process.env.APP_NAME} API v1.0 - Health check passed`, res));
 
 const appRoutes = new API(app);
 appRoutes.registerGroups();
