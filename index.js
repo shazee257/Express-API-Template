@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   console.log("API is called!");
   console.log(`API Calling from ${req?.ip})`;
   generateResponse(null, `${process.env.APP_NAME} API v1.0 - Health check passed`, res);
-}
+});
 
 const appRoutes = new API(app);
 appRoutes.registerGroups();
