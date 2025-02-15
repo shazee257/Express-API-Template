@@ -31,7 +31,8 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
     const { email, password } = req.body;
-
+    console.log('req.body >>>>>>>>>', req.body);
+    
     if (!email || !password) return next({
         statusCode: 401,
         message: 'Email and password are required',
